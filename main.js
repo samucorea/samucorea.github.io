@@ -3,15 +3,15 @@ var lista = document.getElementById("lista");
 
 
 
-/*if(getCookie("tasks") != ""){
-tareas = loadList(getCookie("tasks"));
+if(getCookie("tasks") != ""){
+tareas = loadList("tasks");
 for(var i =0; i < tareas.length; i++){
    creation(document.createTextNode(tareas[i]));
     
 }
 
 }
-*/
+
 console.log(tareas);
 
 
