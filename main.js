@@ -73,7 +73,7 @@ function deleteElement(e){
     }
     lista.removeChild(elemento);
     arraycambiada = JSON.stringify(tareas);
-    createCookie("tasks", tareas, "30");
+    createCookie("tasks", arraycambiada, "30");
     
 }
 
