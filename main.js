@@ -35,7 +35,7 @@ function insertar(){
 
     creation(nuevatarea);
     arrayconvertida = JSON.stringify(tareas);
-    document.cookie = "tasks" + "=" + arrayconvertida;
+    createCookie("tasks", arrayconvertida);
     console.log(getCookie("tasks"));
     
 }
