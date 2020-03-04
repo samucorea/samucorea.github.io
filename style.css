@@ -1,0 +1,8 @@
+.simboloX{
+    margin-left:5px;
+    opacity: 0;
+}
+.simboloX:hover{
+    opacity: 1;
+    cursor: pointer;
+}
