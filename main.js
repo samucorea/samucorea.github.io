@@ -42,8 +42,14 @@ function insertar(){
 
 function creation(item){
     var insertTool= document.createElement("li");
-
+    insertTool.setAttribute("draggable", "true");
     insertTool.appendChild(item);
+
+   // var Drag = document.createElement("li");
+    //Drag.setAttribute("style","list-style-type: none;")
+
+
+    
     
 
     var deleteTool = document.createElement("span");
@@ -56,6 +62,7 @@ function creation(item){
 
 
     lista.appendChild(insertTool);
+    //lista.appendChild(Drag);
 }
 
 function deleteElement(e){
