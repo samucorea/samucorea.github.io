@@ -2,16 +2,19 @@ var tareas = new Array;
 var lista = document.getElementById("lista");
 var counter = 0;
 
-if(getCookie("tasks") != ""){
-tareas = loadList("tasks");
+if(getCookie("tasks") != undefined){
+
+    tareas = loadList("tasks");
+
 for(var i =0; i < tareas.length; i++){
+
    creation(document.createTextNode(tareas[i]));
     
 }
 
 }
 
-console.log(tareas);
+
 
 
 document.addEventListener("keydown", event =>{
@@ -78,7 +81,7 @@ function deleteElement(e){
         if(tareas[i] == x){
 
                 tareas.splice(tareas.indexOf(tareas[i]), 1);
-                localStorage.setItem("listaguardada", JSON.stringify(tareas));
+
                 break;
             }
     }
@@ -133,11 +136,12 @@ function getCookie(name) {
   }
 
   function onDrop(event){
-    
+    event.preventDefault();
     if(event.target.tagName == "SPAN"){
         return;
     }
 
+    
    
     const id= event
         .dataTransfer        
@@ -145,15 +149,31 @@ function getCookie(name) {
 
     const draggableElement = document.getElementById(id);
     const dropzone = event.target;
-
+    
     var aux = draggableElement.childNodes[0].nodeValue;
+
+    var indexBegin = tareas.indexOf(aux);
+    var indexEnd = tareas.indexOf(dropzone.childNodes[0].nodeValue);
+
+    var auxarray = tareas[indexBegin];
+
+    tareas[indexBegin] = tareas[indexEnd];
+    tareas[indexEnd] = auxarray;
+
+
     draggableElement.childNodes[0].nodeValue = dropzone.childNodes[0].nodeValue;
     dropzone.childNodes[0].nodeValue = aux;
     
+   
+    var arraycambiada = JSON.stringify(tareas);
+    createCookie("tasks", arraycambiada,"365");
+    
 
+    
     event
     .dataTransfer
     .clearData();
+    
     
   }
 
