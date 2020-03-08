@@ -1,8 +1,7 @@
 var tareas = new Array;
 var lista = document.getElementById("lista");
-
-
-
+var counter = 0;
+/*
 if(getCookie("tasks") != ""){
 tareas = loadList("tasks");
 for(var i =0; i < tareas.length; i++){
@@ -11,7 +10,7 @@ for(var i =0; i < tareas.length; i++){
 }
 
 }
-
+*/
 console.log(tareas);
 
 
@@ -41,20 +40,23 @@ function insertar(){
 }
 
 function creation(item){
+
+    var idActual = counter.toString();
+
     var insertTool= document.createElement("li");
     insertTool.setAttribute("draggable", "true");
+    insertTool.setAttribute("ondragstart","onDragStart(event)");
+    insertTool.setAttribute("ondrop","onDrop(event)");
+    insertTool.setAttribute("ondragover","onDragOver(event)");
+    insertTool.setAttribute("id",idActual);
+    
+   
     insertTool.appendChild(item);
-
-   // var Drag = document.createElement("li");
-    //Drag.setAttribute("style","list-style-type: none;")
-
-
-    
-    
 
     var deleteTool = document.createElement("span");
     deleteTool.setAttribute("class", "simboloX");
     deleteTool.setAttribute("onclick","deleteElement(event)");
+
 
     var symbol = document.createTextNode("X");
     deleteTool.appendChild(symbol);
@@ -62,7 +64,9 @@ function creation(item){
 
 
     lista.appendChild(insertTool);
-    //lista.appendChild(Drag);
+    
+   
+    counter++;
 }
 
 function deleteElement(e){
@@ -110,4 +114,49 @@ function getCookie(name) {
     var value = "; " + document.cookie;
     var parts = value.split("; " + name + "=");
     if (parts.length == 2) return parts.pop().split(";").shift();
+  }
+
+  function onDragStart(event){
+
+    
+      event
+      .dataTransfer
+      .setData("text", event.target.id);
+      
+
+
+  }
+
+  function onDragOver(event){
+      event.preventDefault();
+    
+  }
+
+  function onDrop(event){
+    
+    if(event.target.tagName == "SPAN"){
+        return;
+    }
+
+   
+    const id= event
+        .dataTransfer        
+        .getData("text");
+
+    const draggableElement = document.getElementById(id);
+    const dropzone = event.target;
+
+    var aux = draggableElement.childNodes[0].nodeValue;
+    draggableElement.childNodes[0].nodeValue = dropzone.childNodes[0].nodeValue;
+    dropzone.childNodes[0].nodeValue = aux;
+    
+
+    event
+    .dataTransfer
+    .clearData();
+    
+  }
+
+  function cancel(){
+      return;
   }

@@ -6,3 +6,7 @@
     opacity: 1;
     cursor: pointer;
 }
+
+li:hover{
+    cursor: default;
+}
