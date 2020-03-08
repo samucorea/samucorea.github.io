@@ -1,7 +1,7 @@
 var tareas = new Array;
 var lista = document.getElementById("lista");
 var counter = 0;
-/*
+
 if(getCookie("tasks") != ""){
 tareas = loadList("tasks");
 for(var i =0; i < tareas.length; i++){
@@ -10,7 +10,7 @@ for(var i =0; i < tareas.length; i++){
 }
 
 }
-*/
+
 console.log(tareas);
 
 
