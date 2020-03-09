@@ -17,8 +17,9 @@ for(var i =0; i < tareas.length; i++){
 
 
 
-document.addEventListener("keydown", event =>{
-    if(event.keyCode == "13"){
+document.addEventListener("keypress", event =>{
+  
+     if (event.keyCode == "13"){
         
         insertar();
     }
@@ -27,6 +28,9 @@ document.addEventListener("keydown", event =>{
 
 function insertar(){
     
+    if($("#new")[0].value == ""){
+        return;
+    }
 
     tareas.push(document.getElementById("new").value)
     var nuevatarea = document.createTextNode(document.getElementById("new").value);
@@ -52,9 +56,14 @@ function creation(item){
     insertTool.setAttribute("ondrop","onDrop(event)");
     insertTool.setAttribute("ondragover","onDragOver(event)");
     insertTool.setAttribute("id",idActual);
+
     
-   
-    insertTool.appendChild(item);
+    
+    var newtaskgroup = document.createElement("span");
+
+    newtaskgroup.appendChild(item);
+
+    insertTool.appendChild(newtaskgroup);
 
     var deleteTool = document.createElement("span");
     deleteTool.setAttribute("class", "simboloX");
@@ -75,7 +84,9 @@ function creation(item){
 function deleteElement(e){
    
     var elemento = e.target.parentNode;
-    var x =elemento.childNodes[0].nodeValue;
+    var x =elemento.firstChild.childNodes[0].nodeValue;
+    console.log(elemento);
+    console.log(x);
 
     for(var i = 0;i < tareas.length;i++){
         if(tareas[i] == x){
@@ -86,6 +97,7 @@ function deleteElement(e){
             }
     }
     lista.removeChild(elemento);
+    console.log(tareas);
     arraycambiada = JSON.stringify(tareas);
     createCookie("tasks", arraycambiada, "30");
     
@@ -137,7 +149,7 @@ function getCookie(name) {
 
   function onDrop(event){
     event.preventDefault();
-    if(event.target.tagName == "SPAN"){
+    if(event.target.className == "simboloX"){
         return;
     }
 
@@ -146,23 +158,27 @@ function getCookie(name) {
     const id= event
         .dataTransfer        
         .getData("text");
+   
 
     const draggableElement = document.getElementById(id);
+    console.log(draggableElement);
     const dropzone = event.target;
     
-    var aux = draggableElement.childNodes[0].nodeValue;
+    console.log(event.target);
+    var aux = draggableElement.childNodes[0].innerHTML;
+    
 
-    var indexBegin = tareas.indexOf(aux);
-    var indexEnd = tareas.indexOf(dropzone.childNodes[0].nodeValue);
+    var dragElement = tareas.indexOf(aux);
+    var dropElement = tareas.indexOf(dropzone.innerHTML);
 
-    var auxarray = tareas[indexBegin];
+    var auxarray = tareas[dragElement];
 
-    tareas[indexBegin] = tareas[indexEnd];
-    tareas[indexEnd] = auxarray;
+    tareas[dragElement] = tareas[dropElement];
+    tareas[dropElement] = auxarray;
 
 
-    draggableElement.childNodes[0].nodeValue = dropzone.childNodes[0].nodeValue;
-    dropzone.childNodes[0].nodeValue = aux;
+    draggableElement.childNodes[0].innerHTML = dropzone.innerHTML;
+    dropzone.innerHTML = aux;
     
    
     var arraycambiada = JSON.stringify(tareas);
@@ -180,3 +196,33 @@ function getCookie(name) {
   function cancel(){
       return;
   }
+
+
+
+  var oriVal;
+  $("#lista").on('dblclick', 'span', function () {
+      oriVal = $(this).text();
+      $(this).text("");
+      $("<input type='text'>").appendTo(this).focus();
+  });
+
+  $("#lista").on('focusout', 'span > input', function () {
+      var $this = $(this);
+      
+      $this.parent().text($this.val() || oriVal); 
+      $this.remove();
+
+      var indexChanged = tareas.indexOf(oriVal);
+      tareas[indexChanged] = $this.val();
+
+      console.log(tareas);
+      createCookie("tasks", JSON.stringify(tareas));
+
+  });
+
+  $("#lista").keydown(function(e){
+    if(e.which == "13"){
+           
+           $(':input').blur();
+    }
+});
