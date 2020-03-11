@@ -58,12 +58,13 @@ function creation(item){
     insertTool.setAttribute("id",idActual);
 
     
-    
-    var newtaskgroup = document.createElement("span");
 
-    newtaskgroup.appendChild(item);
 
-    insertTool.appendChild(newtaskgroup);
+    var textContent = document.createElement("span");
+    textContent.setAttribute("class","textContent");
+    textContent.appendChild(item);
+
+    insertTool.appendChild(textContent);
 
     var deleteTool = document.createElement("span");
     deleteTool.setAttribute("class", "simboloX");
@@ -72,7 +73,9 @@ function creation(item){
 
     var symbol = document.createTextNode("X");
     deleteTool.appendChild(symbol);
+    
     insertTool.appendChild(deleteTool);
+    //insertTool.appendChild(deleteTool);
 
 
     lista.appendChild(insertTool);
@@ -84,12 +87,14 @@ function creation(item){
 function deleteElement(e){
    
     var elemento = e.target.parentNode;
-    var x =elemento.firstChild.childNodes[0].nodeValue;
+    var x =elemento.childNodes[0].innerHTML;
+
     console.log(elemento);
+    console.log(tareas);
     console.log(x);
 
     for(var i = 0;i < tareas.length;i++){
-        if(tareas[i] == x){
+        if(tareas[i] == x.toString()){
 
                 tareas.splice(tareas.indexOf(tareas[i]), 1);
 
@@ -144,14 +149,39 @@ function getCookie(name) {
 
   function onDragOver(event){
       event.preventDefault();
+      
     
   }
 
+  $('#lista').on('dragover','li', function (){
+        $(this).css('background-color','red');
+        $(this).css('border-radius','20px');
+        
+  })
+  $('#lista').on('dragleave','li', function (){
+    $(this).css('background-color','white');
+})
+$('#lista').on('drop','li', function (){
+    $(this).css('background-color','white');
+})
+$('li').hover(function(){
+    $(this).css('background-color','lightblue');
+    $(this).css('border-radius','20px');
+},function(){
+    $(this).css('background-color','white');
+})
+
+  
+ // $('#lista').on
+
   function onDrop(event){
     event.preventDefault();
-    if(event.target.className == "simboloX"){
+    console.log(event.target.id);
+    if(event.target.className == "simboloX" || event.target.parentNode.nodeName=="UL"){
         return;
     }
+    
+   
 
     
    
@@ -161,24 +191,26 @@ function getCookie(name) {
    
 
     const draggableElement = document.getElementById(id);
-    console.log(draggableElement);
-    const dropzone = event.target;
+   
+    const dropzone = event.target.parentNode;
     
-    console.log(event.target);
     var aux = draggableElement.childNodes[0].innerHTML;
+    
     
 
     var dragElement = tareas.indexOf(aux);
-    var dropElement = tareas.indexOf(dropzone.innerHTML);
+    var dropElement = tareas.indexOf(dropzone.childNodes[0].innerHTML);
+
+    console.log(dropzone);
 
     var auxarray = tareas[dragElement];
 
     tareas[dragElement] = tareas[dropElement];
     tareas[dropElement] = auxarray;
 
-
-    draggableElement.childNodes[0].innerHTML = dropzone.innerHTML;
-    dropzone.innerHTML = aux;
+   
+    draggableElement.childNodes[0].innerHTML = dropzone.childNodes[0].innerHTML;
+    dropzone.childNodes[0].innerHTML = aux;
     
    
     var arraycambiada = JSON.stringify(tareas);
@@ -202,8 +234,10 @@ function getCookie(name) {
   var oriVal;
   $("#lista").on('dblclick', 'span', function () {
       oriVal = $(this).text();
+      
+      console.log(oriVal);
       $(this).text("");
-      $("<input type='text'>").appendTo(this).focus();
+      $("<input type='text' class='edit' style='margin-left:20px'>").appendTo(this).focus();
   });
 
   $("#lista").on('focusout', 'span > input', function () {
@@ -213,9 +247,16 @@ function getCookie(name) {
       $this.remove();
 
       var indexChanged = tareas.indexOf(oriVal);
-      tareas[indexChanged] = $this.val();
+      
+      if($this.val() == ""){
+          tareas[indexChanged] = oriVal;
+      }
+      else{
+        tareas[indexChanged] = $this.val();
+      }
+      
 
-      console.log(tareas);
+     
       createCookie("tasks", JSON.stringify(tareas));
 
   });
@@ -223,6 +264,6 @@ function getCookie(name) {
   $("#lista").keydown(function(e){
     if(e.which == "13"){
            
-           $(':input').blur();
+           $(':focus').blur();
     }
 });

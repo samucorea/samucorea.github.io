@@ -10,5 +10,36 @@
 li:hover{
     cursor: default;
 }
+li{
+   
+    list-style-type: none;
+    margin:auto;
+    padding-top: 10px;
+    font-size: 20px;
+    width:35%;
+    
+}
+
+ul{
+    padding:0;
+    margin:auto;
+    display:inline;
+}
+.bloque{
+    text-align:center;
+}
+input{
+    margin-right:14px;
+    margin-left:auto;
+    margin-top:auto;
+    margin-bottom:auto;
+    text-align:center;
+    font-size:20px;
+    
+}
+li:hover{
+    border-radius: 20px;
+    background-color:lightblue;
+}
 
 
