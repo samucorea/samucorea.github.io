@@ -1,6 +1,10 @@
 var tareas = new Array;
 var lista = document.getElementById("lista");
-var counter = 0;
+var counterActual;
+
+
+
+
 
 if(getCookie("tasks") != undefined){
 
@@ -8,11 +12,13 @@ if(getCookie("tasks") != undefined){
 
 for(var i =0; i < tareas.length; i++){
 
-   creation(document.createTextNode(tareas[i]));
+   creation(document.createTextNode(tareas[i]),i.toString());
     
 }
 
 }
+counterActual = tareas.length;
+
 
 
 
@@ -39,23 +45,28 @@ function insertar(){
     
  
 
-    creation(nuevatarea);
+    creation(nuevatarea, counterActual.toString());
     arrayconvertida = JSON.stringify(tareas);
     createCookie("tasks", arrayconvertida, "30");
-    console.log(getCookie("tasks"));
+   
     
+    counterActual++;
 }
 
-function creation(item){
+function creation(item, id){
 
-    var idActual = counter.toString();
+    
+
+    
 
     var insertTool= document.createElement("li");
     insertTool.setAttribute("draggable", "true");
     insertTool.setAttribute("ondragstart","onDragStart(event)");
     insertTool.setAttribute("ondrop","onDrop(event)");
     insertTool.setAttribute("ondragover","onDragOver(event)");
-    insertTool.setAttribute("id",idActual);
+    insertTool.setAttribute("id",id);
+
+   
 
     
 
@@ -80,8 +91,8 @@ function creation(item){
 
     lista.appendChild(insertTool);
     
-   
-    counter++;
+  
+    
 }
 
 function deleteElement(e){
@@ -89,9 +100,7 @@ function deleteElement(e){
     var elemento = e.target.parentNode;
     var x =elemento.childNodes[0].innerHTML;
 
-    console.log(elemento);
-    console.log(tareas);
-    console.log(x);
+   
 
     for(var i = 0;i < tareas.length;i++){
         if(tareas[i] == x.toString()){
@@ -102,7 +111,7 @@ function deleteElement(e){
             }
     }
     lista.removeChild(elemento);
-    console.log(tareas);
+
     arraycambiada = JSON.stringify(tareas);
     createCookie("tasks", arraycambiada, "30");
     
@@ -154,22 +163,15 @@ function getCookie(name) {
   }
 
   $('#lista').on('dragover','li', function (){
-        $(this).css('background-color','red');
-        $(this).css('border-radius','20px');
-        
+       
   })
   $('#lista').on('dragleave','li', function (){
-    $(this).css('background-color','white');
+    
 })
 $('#lista').on('drop','li', function (){
-    $(this).css('background-color','white');
+   
 })
-$('li').hover(function(){
-    $(this).css('background-color','lightblue');
-    $(this).css('border-radius','20px');
-},function(){
-    $(this).css('background-color','white');
-})
+
 
   
  // $('#lista').on
@@ -237,7 +239,7 @@ $('li').hover(function(){
       
       console.log(oriVal);
       $(this).text("");
-      $("<input type='text' class='edit' style='margin-left:20px'>").appendTo(this).focus();
+      $("<input type='text' class='edit'>").appendTo(this).focus();
   });
 
   $("#lista").on('focusout', 'span > input', function () {
@@ -257,7 +259,7 @@ $('li').hover(function(){
       
 
      
-      createCookie("tasks", JSON.stringify(tareas));
+      createCookie("tasks", JSON.stringify(tareas),"365");
 
   });
 

@@ -2,24 +2,28 @@
     <head>
         <title>Lista</title>
         <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href ="css/bootstrap.min.css"/>
         <meta charset="UTF-8" />
     </head>
     <body>
         
-        <div class="bloque">
-            <h1>To-Do List</h1>
-            <!--<span id="gatos">Insertar tarea:</span> --> 
-                <!-- You will not be able to see this text.
+        <div class="container">
+            <div class ="row">
+               <div class="col-md-4"></div>
+                <div class="col-md-4 lista">
+                <h1>To-Do List</h1>
+            
+                 <input id ="new" maxlength = "40" minlength="1"> </input>
 
-                 <button onclick="insertar()">Insertar</button> -->
-                 <input id ="new"> </input>
-
-            <ul id ="lista">
+                <ul id ="lista">
                
             
-            </ul>
+                </ul>
             
-
+                </div>
+              <div class ="col-md-4"></div>
+            </div>
+            
         </div>
         <script type="text/javascript" src="./jquery-3.4.1.min.js"></script>
         <script src="main.js"></script>
