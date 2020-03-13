@@ -268,8 +268,9 @@ function getCookie(name) {
   $("#lista").on('dblclick', 'span', function () {
       oriVal = $(this).text();
       
-     
+      $(this).parent().children().hide();
       $(this).text("");
+      $(this).show();
       var inputEdit =  $(`<input type='text' class='edit' value ="">`);
       inputEdit.val(oriVal);
       inputEdit.appendTo(this).focus();
@@ -277,6 +278,7 @@ function getCookie(name) {
 
   $("#lista").on('focusout', 'span > input', function () {
       var $this = $(this);
+      var parent = $(this).parent();
       
       $this.parent().text($this.val() || oriVal); 
       $this.remove();
@@ -289,6 +291,7 @@ function getCookie(name) {
       else{
         tareas[indexChanged] = $this.val();
       }
+      parent.parent().children().show();
       
 
      
