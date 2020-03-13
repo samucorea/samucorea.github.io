@@ -200,13 +200,18 @@ function getCookie(name) {
 
     const draggableElement = document.getElementById(id);
     
-    if(event.target.className == "simboloX" || event.target.parentNode.nodeName=="UL" || event.target.nodeName ==="INPUT" || draggableElement == null){
+    if(event.target.className == "simboloX" ||  event.target.nodeName ==="INPUT" || draggableElement == null){
         return;
     }
-    
+
+    var dropzone = event.target.parentNode;
+
+    if(event.target.parentNode.nodeName=="UL"){
+        dropzone = event.target;
+    }
     
    
-    const dropzone = event.target.parentNode;
+    
     
     var aux = draggableElement.childNodes[0].innerHTML;
     var auxBG = draggableElement.style.backgroundColor;
