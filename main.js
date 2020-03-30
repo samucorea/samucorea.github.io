@@ -206,7 +206,7 @@ function getCookie(name) {
 
     var dropzone = event.target.parentNode;
 
-    if(event.target.parentNode.nodeName=="UL"){
+    if(event.target.nodeName=="LI"){
         dropzone = event.target;
     }
     
