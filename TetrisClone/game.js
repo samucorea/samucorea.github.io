@@ -17,7 +17,7 @@ allShapes.push(new Shape());
 currentShape = allShapes[allShapes.length-1];
 
 currentShape.initializeShape();
- setInterval(function(){
+ var playing = setInterval(function(){
     
    
    
