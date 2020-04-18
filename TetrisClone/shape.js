@@ -1,7 +1,10 @@
 var canvas = document.getElementById("gameCanvas");
 var ctx = canvas.getContext("2d");
-var totalCols = canvas.width/30;
-var totalRows = canvas.height/10;
+var totalCols = canvas.width/60;
+var totalRows = canvas.height/20;
+var updating = 0;
+var scale = 20;
+
 
 
 
@@ -11,36 +14,47 @@ class Block {
     constructor(x,y){
         this.x = x;
         this.y = y;
-        ctx.fillStyle = "red";
-        ctx.fillRect(x,y,10,10);
-        ctx.strokeRect(x,y,10,10);
+     
     }
+    draw(){
+        ctx.fillStyle = "red";
+        ctx.fillRect(this.x,this.y,scale,scale);
+         ctx.strokeRect(this.x,this.y,scale,scale);
+    }
+  
+  
 }
 
 class Shape{
-    x = 20;
-    y = 100;
+
+    
+    x = 160;
+    y = 40;
     hasFallen = false;
     totalBlocks = new Array(4);
-    speed = 10;
+    speed = scale;
     type = Math.floor(Math.random() * 7);
   
   
-    drawShape(){
+    initializeShape(){
+        
         var xsquare = this.x;
         var ysquare = this.y;
+     
 
         
-        switch(this.type){
+        switch(0){
             case 0:
+
                 // [][][][]
                
                 for(let i = 0;i < this.totalBlocks.length;i++){
                     this.totalBlocks[i] = new Block(xsquare,ysquare);
-                    xsquare+=10;
+                    xsquare+=scale;
                    
                 
                 }
+               
                
        
                 break;
@@ -51,22 +65,26 @@ class Shape{
                 //[][][]
                 
                 this.totalBlocks[0] = new Block(xsquare,ysquare);
-                ysquare += 10;
+                ysquare += scale;
                 for(let i = 1; i < 4; i++){
-                    this.totalBlocks[i] = new Block(xsquare,ysquare,10,10);
-                    xsquare += 10;
+                    this.totalBlocks[i] = new Block(xsquare,ysquare);
+                    
+                    xsquare += scale;
                     
                 }
+         
                 break;
             case 2:
                      //[]
                  //[][][]
 
                  this.totalBlocks[0] = new Block(xsquare,ysquare);
-                ysquare += 10;
+                
+                ysquare += scale;
                 for(let i = 1; i < 4; i++){
                     this.totalBlocks[i] = new Block(xsquare,ysquare);
-                    xsquare -= 10;
+                  
+                    xsquare -= scale;
                     
                     
                 }
@@ -76,9 +94,11 @@ class Shape{
                 //[][]
                 //[][]
                 for(let i = 0; i <= 2;i +=2){
-                    this.totalBlocks[i] = new Block(xsquare,ysquare);
-                    this.totalBlocks[i+1] = new Block(xsquare+10,ysquare);
-                    ysquare+=10;
+                     this.totalBlocks[i] = new Block(xsquare,ysquare);
+                 
+                    this.totalBlocks[i+1] = new Block(xsquare+scale,ysquare);
+           
+                    ysquare+=scale;
                 }
                 break;
             case 4:
@@ -87,10 +107,12 @@ class Shape{
                 
                for(let i = 0; i <= 2; i+=2){
                     this.totalBlocks[i] = new Block(xsquare,ysquare);
-                    this.totalBlocks[i+1] = new Block(xsquare+10,ysquare);
+              
+                    this.totalBlocks[i+1] = new Block(xsquare+scale,ysquare);
                    
-                    ysquare -= 10;
-                    xsquare += 10;
+                   
+                    ysquare -= scale;
+                    xsquare += scale;
                }
                 break;
             case 5:
@@ -99,11 +121,13 @@ class Shape{
 
                for(let i =0; i < 3; i++){
                    this.totalBlocks[i] = new Block(xsquare,ysquare);
-                   xsquare+=10;
+          
+                   xsquare+=scale;
                }
-               xsquare -=20;
-               ysquare -=10;
+               xsquare -=scale*2;
+               ysquare -=scale;
                this.totalBlocks[3]= new Block(xsquare,ysquare);
+         
                break;
 
             case 6:
@@ -111,78 +135,165 @@ class Shape{
             //  [][]
             for(let i = 0; i <= 2; i+=2){
                 this.totalBlocks[i] = new Block(xsquare,ysquare);
-                this.totalBlocks[i+1] = new Block(xsquare+10,ysquare);
+                
+                this.totalBlocks[i+1] = new Block(xsquare+scale,ysquare);
+         
                
-                ysquare -= 10;
-                xsquare -= 10;
+                ysquare -= scale;
+                xsquare -= scale;
            }
            break;
               
         }
+        
          
     }
-    update(){
-        
-        addEventListener('keydown',keyMov);
+    drawShape(){
 
+        for(let i = 0; i < 4; i++){
+            this.totalBlocks[i].draw();
+        }
+        jumping = false;
+    }
+    
+   
+    update(){
+     
+        jumping = true;
+    
+      
         
-        if(this.totalBlocks.every(function(block){return block.y < 390})&& this.hasFallen == false && this.totalBlocks.every(checkBlock)){
-        
-            this.y += this.speed;
+        if(this.totalBlocks.every(function(block){return block.y < canvas.height-10}) && this.totalBlocks.every(checkBlock)){
+
+           
+                this.modify(0,this.speed);
+            
            
         }
         else{
+               var thisShape = this;
 
+
+               setTimeout(function(){
+                if(!(thisShape.totalBlocks.every(function(block){return block.y < canvas.height-10}) && thisShape.totalBlocks.every(checkBlock))){
+                   thisShape.hasFallen = true;
+                    for(let i = 0;i<4;i++){
+                        var blockx = thisShape.totalBlocks[i].x/scale;
+                        var blocky = thisShape.totalBlocks[i].y/scale;
+                        game[blocky][blockx] = 1;
+
+                        if(game[blocky].every(function(spot){return spot == 1})){
+                            ctx.clearRect(0,thisShape.totalBlocks[i].y,canvas.width,scale);
+                            game[blocky].fill(0,0,game[blocky].length);
+                        }
+                    }
+
+                }
+             
+
+               },750);
+                    
+               
           
-            this.hasFallen = true;
            
         }
+       
+       
 
-        for(let i = 0; i < 4; i++){
-            if(game[(this.totalBlocks[i].y/10)+1][this.totalBlocks[i].x/10] == 1){
-            setTimeout(function(){this.hasFallen = true;},1000);
-                
-            
-            }
-            
-        }
         
 
         }
+        modify(accX,accY){
+            for(let i = 0; i < 4; i++){
+                this.totalBlocks[i].x += accX;
+                this.totalBlocks[i].y += accY;
+            }
+        }
+        
+        rotateShape(){
+             
+         
+
+           var horizontalCenter = this.totalBlocks[1].x;
+           var verticalCenter = this.totalBlocks[1].y;
+
+            for(let i = 0; i < 4; i++){
+                if( i == 1){
+                    continue;
+                }
+               
+                var y = this.totalBlocks[i].y;
+                var x = this.totalBlocks[i].x;
+
+                y-= verticalCenter;
+                x -= horizontalCenter;
+                var aux = x;
+                x = -y;
+                y = aux;
+                 x+= horizontalCenter;
+                y += verticalCenter;
+               
+
+               this.totalBlocks[i]= new Block(x,y);
+               this.totalBlocks[i].draw();
+            }
+        }
+        
     
     }
    function keyMov(event){
-       console.log(currentShape.totalBlocks.every(checkBlock));
-    if(event.keyCode == 39 && currentShape.totalBlocks.every(function(block){return block.x <290 && game[block.y/10][block.x/10 + 1] != 1})){
-        currentShape.x+=10;
+
+     
+        clearShape();
+        if(event.keyCode == 39 && currentShape.totalBlocks.every(function(block){return block.x <canvas.width - scale && game[block.y/scale][block.x/scale + 1] != 1}) ){
+            currentShape.modify(scale,0);
         
  
-    }
+         }
 
-    if(event.keyCode == 37 && currentShape.totalBlocks.every(function(block){return block.x > 0 && game[block.y/10][block.x/10 -1] != 1})){
-        currentShape.x-=10;
-    }
+        if(event.keyCode == 37 && currentShape.totalBlocks.every(function(block){return block.x > 0 && game[block.y/scale][block.x/scale -1] != 1})){
+            currentShape.modify(-scale,0);
+        }
 
-    if(event.keyCode == 40 && currentShape.totalBlocks.every(function(block){return block.y < 390}) && currentShape.totalBlocks.every(checkBlock)){
+        if(event.keyCode == 40 && currentShape.totalBlocks.every(function(block){return block.y < canvas.height - scale}) && jumping == false){
+    
+     
+           currentShape.update();
 
-        currentShape.y += 10;
-       
-    }
-    for(let i = 0;i < currentShape.totalBlocks.length;i++){
-        ctx.clearRect(currentShape.totalBlocks[i].x,currentShape.totalBlocks[i].y,10,10);
-    }
+        }
 
+        if(event.keyCode == 38){
+        
+        
+           currentShape.rotateShape();
+              
+                
+     
+          
+           
+        }
+    
+    
     currentShape.drawShape();
+
+  
+    
 }
 
    
 
    function checkBlock(block){
-       return game[block.y/10 + 1][block.x / 10] != 1;
+       try{
+       
+       return game[block.y/scale + 1][block.x / scale] != 1;
+       }
+       catch{
+           console.log(block.x);
+           console.log(scale);
+       }
    }
 
-   function adyacentBlockright(block){
-       return game[block.y/10][block.x/10+1] != 1;
-   }
+ 
+  
 
-
+   addEventListener('keydown',keyMov);

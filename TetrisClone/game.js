@@ -2,10 +2,12 @@ var allShapes = [];
 var canvas = document.getElementById("gameCanvas");
 var ctx = canvas.getContext("2d");
 var currentShape;
-var game = new Array(40);
+console.log(canvas.height/scale);
+var game = new Array(canvas.height/scale);
+var jumping;
 
 for(let i = 0; i < game.length;i++){
-    game[i] = new Array(30).fill(0);
+    game[i] = new Array(canvas.width/scale).fill(0);
   
 }
 
@@ -13,8 +15,9 @@ allShapes.push(new Shape());
 
 
 currentShape = allShapes[allShapes.length-1];
-currentShape.drawShape();
-setInterval(function(){
+
+currentShape.initializeShape();
+ setInterval(function(){
     
    
    
@@ -22,24 +25,23 @@ setInterval(function(){
   
     if(currentShape.hasFallen){
        
-        for(let i = 0;i<4;i++){
-           var blockx = currentShape.totalBlocks[i].x/10;
-           var blocky = currentShape.totalBlocks[i].y/10;
-            game[blocky][blockx] = 1;
-
-        }
         
+        console.log(game);
         allShapes.push(new Shape());
         currentShape = allShapes[allShapes.length-1];
+        currentShape.initializeShape();
+        
+       
        
        
     }else{
-        for(let i = 0;i < currentShape.totalBlocks.length;i++){
-            ctx.clearRect(currentShape.totalBlocks[i].x,currentShape.totalBlocks[i].y,10,10);
-        }
+        clearShape();
     }
-    currentShape.drawShape();
+   
+    
     currentShape.update();
+     currentShape.drawShape();
+
     
    
 
@@ -47,8 +49,12 @@ setInterval(function(){
     
     
 
-},1000);
+ },1000);
 
 
-
+function clearShape(){
+    for(let i = 0;i < currentShape.totalBlocks.length;i++){
+        ctx.clearRect(currentShape.totalBlocks[i].x,currentShape.totalBlocks[i].y,scale,scale);
+    }
+}
 
