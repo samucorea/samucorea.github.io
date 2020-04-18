@@ -29,7 +29,7 @@ class Shape{
 
     
     x = 160;
-    y = 40;
+    y = 0;
     hasFallen = false;
     totalBlocks = new Array(4);
     speed = scale;
@@ -170,6 +170,8 @@ class Shape{
             
            
         }
+       
+        
         else{
                var thisShape = this;
 
@@ -196,6 +198,10 @@ class Shape{
                
           
            
+        }
+        if(this.totalBlocks.some(function(block){return block.y < 0})){
+            clearInterval(playing);
+            document.write("puto");
         }
        
        
