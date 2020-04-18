@@ -43,7 +43,7 @@ class Shape{
      
 
         
-        switch(0){
+        switch(this.type){
             case 0:
 
                 // [][][][]
