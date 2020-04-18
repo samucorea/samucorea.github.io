@@ -186,8 +186,17 @@ class Shape{
 
                         if(game[blocky].every(function(spot){return spot == 1})){
                             ctx.clearRect(0,thisShape.totalBlocks[i].y,canvas.width,scale);
-                            game[blocky].fill(0,0,game[blocky].length);
+                            game[blocky].fill(0);
+                            for(var x = 19; x > 0; x--){
+                                game[x] = game[x-1].slice(0);
+                               
+                            }
+                            ctx.clearRect(0,0,canvas.width,canvas.height);
+                            drawNew(game);
+                            
+                            console.log(game);
                         }
+
                     }
 
                 }
@@ -294,8 +303,7 @@ class Shape{
        return game[block.y/scale + 1][block.x / scale] != 1;
        }
        catch{
-           console.log(block.x);
-           console.log(scale);
+         
        }
    }
 

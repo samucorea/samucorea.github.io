@@ -2,7 +2,7 @@ var allShapes = [];
 var canvas = document.getElementById("gameCanvas");
 var ctx = canvas.getContext("2d");
 var currentShape;
-console.log(canvas.height/scale);
+
 var game = new Array(canvas.height/scale);
 var jumping;
 
@@ -26,7 +26,7 @@ currentShape.initializeShape();
     if(currentShape.hasFallen){
        
         
-        console.log(game);
+    
         allShapes.push(new Shape());
         currentShape = allShapes[allShapes.length-1];
         currentShape.initializeShape();
@@ -55,6 +55,19 @@ currentShape.initializeShape();
 function clearShape(){
     for(let i = 0;i < currentShape.totalBlocks.length;i++){
         ctx.clearRect(currentShape.totalBlocks[i].x,currentShape.totalBlocks[i].y,scale,scale);
+    }
+}
+function drawNew(matrix){
+
+    for(var i = 0; i < matrix.length; i++){
+       for(let x = 0; x < matrix[i].length; x++){
+           if(matrix[i][x] == 1){
+               var block = new Block(x*scale,i*scale);
+               block.draw();
+               console.log("hola");
+           }
+       }
+       
     }
 }
 
