@@ -187,10 +187,15 @@ class Shape{
                         if(game[blocky].every(function(spot){return spot == 1})){
                             ctx.clearRect(0,thisShape.totalBlocks[i].y,canvas.width,scale);
                             game[blocky].fill(0);
-                            for(var x = 19; x > 0; x--){
+                            do{
+                               
+                            for(var x = blocky; x > 0; x--){
+                                console.log("hola");
                                 game[x] = game[x-1].slice(0);
+                             
                                
                             }
+                        } while(game[blocky+1].every(block => {return block == 0}));
                             ctx.clearRect(0,0,canvas.width,canvas.height);
                             drawNew(game);
                             

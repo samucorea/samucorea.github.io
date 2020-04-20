@@ -3,13 +3,14 @@ var canvas = document.getElementById("gameCanvas");
 var ctx = canvas.getContext("2d");
 var currentShape;
 
-var game = new Array(canvas.height/scale);
+var game = new Array(canvas.height/scale+ 1);
 var jumping;
 
 for(let i = 0; i < game.length;i++){
     game[i] = new Array(canvas.width/scale).fill(0);
-  
+   
 }
+game[game.length-1] = new Array(canvas.width/scale).fill(1);
 
 allShapes.push(new Shape());
 
@@ -64,7 +65,7 @@ function drawNew(matrix){
            if(matrix[i][x] == 1){
                var block = new Block(x*scale,i*scale);
                block.draw();
-               console.log("hola");
+              
            }
        }
        
