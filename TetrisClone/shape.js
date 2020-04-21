@@ -179,30 +179,57 @@ class Shape{
                setTimeout(function(){
                 if(!(thisShape.totalBlocks.every(function(block){return block.y < canvas.height-10}) && thisShape.totalBlocks.every(checkBlock))){
                    thisShape.hasFallen = true;
+                   
+                   var spots = [];
+                   
                     for(let i = 0;i<4;i++){
                         var blockx = thisShape.totalBlocks[i].x/scale;
                         var blocky = thisShape.totalBlocks[i].y/scale;
                         game[blocky][blockx] = 1;
-
-                        if(game[blocky].every(function(spot){return spot == 1})){
+                        
+                        
+                    }
+                    checkLines(spots);
+                    var lastSpot =spots[spots.length-1];
+                    
+                    if(lastSpot >= 0){
+                        
+                        console.log(lastSpot);
+                        for(let i = 0; i < spots.length; i++){
                             ctx.clearRect(0,thisShape.totalBlocks[i].y,canvas.width,scale);
-                            game[blocky].fill(0);
+                            
+                            game[spots[i]].fill(0);
+                        }
+                        
+                     
+                           
+                           
                             do{
+                         
+                            
+                            for(var x = lastSpot; x > 0; x--){
                                
-                            for(var x = blocky; x > 0; x--){
-                                console.log("hola");
-                                game[x] = game[x-1].slice(0);
-                             
+                                game[x] = [...game[x-1]];
+                               
                                
                             }
-                        } while(game[blocky+1].every(block => {return block == 0}));
+                           
+                           
+                           
+                            
+                        } while(game[lastSpot].every(block => {return block == 0}));
+                      
+                    
                             ctx.clearRect(0,0,canvas.width,canvas.height);
+                          
                             drawNew(game);
+                    }
+                            // sumar +1 a filas faltantes por bajar 0000000 checkRemainingLines() if(game[x+1] all 0 entonces ejecutar algoritmo)
                             
                             console.log(game);
-                        }
+                       
 
-                    }
+                    
 
                 }
              
@@ -292,6 +319,17 @@ class Shape{
           
            
         }
+        if(event.keyCode == 32){
+       
+            if(isOn){
+            clearInterval(playing);
+            isOn = false;
+            }
+            else if(!isOn){
+                playing  = setInterval(juego,1000);
+                isOn = true;
+            }
+        }
     
     
     currentShape.drawShape();
@@ -312,7 +350,17 @@ class Shape{
        }
    }
 
- 
+ function checkLines(spots)
+ {
+     
+   for(var i =0; i < game.length-1; i++){
+       if(game[i].every(block =>{return block == 1})){
+        spots.push(i);
+       }
+   }
+  
+    
+ }
   
 
    addEventListener('keydown',keyMov);
