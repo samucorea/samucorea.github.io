@@ -198,6 +198,7 @@ class Shape{
                         for(let i = 0; i < spots.length; i++){
                             ctx.clearRect(0,thisShape.totalBlocks[i].y,canvas.width,scale);
                             
+                            
                             game[spots[i]].fill(0);
                         }
                         
@@ -260,11 +261,12 @@ class Shape{
         rotateShape(){
              
          
-
+           var beforeTotalBlocks = [...this.totalBlocks];
            var horizontalCenter = this.totalBlocks[1].x;
            var verticalCenter = this.totalBlocks[1].y;
 
             for(let i = 0; i < 4; i++){
+
                 if( i == 1){
                     continue;
                 }
@@ -279,11 +281,17 @@ class Shape{
                 y = aux;
                  x+= horizontalCenter;
                 y += verticalCenter;
+                if(game[y/scale][x/scale] == 1 && y/scale != game.length-1 || x > canvas.width-scale || x < 0){
+               
+                    this.totalBlocks = [...beforeTotalBlocks];
+                    return;
+                }
                
 
                this.totalBlocks[i]= new Block(x,y);
-               this.totalBlocks[i].draw();
+              
             }
+            this.drawShape();
         }
         
     
@@ -309,7 +317,7 @@ class Shape{
 
         }
 
-        if(event.keyCode == 38){
+        if(event.keyCode == 38 && currentShape.type != 3){
         
         
            currentShape.rotateShape();
