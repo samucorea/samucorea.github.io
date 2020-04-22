@@ -71,7 +71,7 @@ function juego(){
     
     currentShape.update();
      currentShape.drawShape();
-     drawNew(game);
+
     
 }
 

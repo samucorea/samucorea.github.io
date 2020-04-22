@@ -179,6 +179,7 @@ class Shape{
                setTimeout(function(){
                 if(!(thisShape.totalBlocks.every(function(block){return block.y < canvas.height-10}) && thisShape.totalBlocks.every(checkBlock))){
                    thisShape.hasFallen = true;
+                  
                    
                    var spots = [];
                    
@@ -193,11 +194,10 @@ class Shape{
                     var lastSpot =spots[spots.length-1];
                     
                     if(lastSpot >= 0){
-                        
+                        removeEventListener('keydown',keyMov);
                         console.log(lastSpot);
                         for(let i = 0; i < spots.length; i++){
                             ctx.clearRect(0,thisShape.totalBlocks[i].y,canvas.width,scale);
-                            
                             
                             game[spots[i]].fill(0);
                         }
@@ -224,16 +224,20 @@ class Shape{
                             ctx.clearRect(0,0,canvas.width,canvas.height);
                           
                             drawNew(game);
+                            setTimeout(() => {
+                                addEventListener('keydown',keyMov);
+                            }, 500);
+                            
                     }
                             // sumar +1 a filas faltantes por bajar 0000000 checkRemainingLines() if(game[x+1] all 0 entonces ejecutar algoritmo)
                             
-                            console.log(game);
+                           
                        
 
                     
-
+                            
                 }
-             
+                
 
                },750);
                     
