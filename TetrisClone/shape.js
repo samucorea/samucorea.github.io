@@ -29,7 +29,7 @@ class Shape{
 
     
     x = 160;
-    y = 20;
+    y = 0;
     hasFallen = false;
     totalBlocks = new Array(4);
     speed = scale;
@@ -243,17 +243,21 @@ class Shape{
                             
                             counter++;
                     }
+                   
+                    
                     
                     ctx.clearRect(0,0,canvas.width,canvas.height);   
                     drawNew(game);
                    
                     playing = setInterval(juego,1000);
                 }
+
+                
                            
-                            
+               
                 }
                 
-
+                
               },500);
                     
                

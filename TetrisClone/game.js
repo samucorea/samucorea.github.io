@@ -20,6 +20,23 @@ currentShape = allShapes[allShapes.length-1];
 currentShape.initializeShape();
  var playing = setInterval(juego,1000);
 
+ setInterval(function(){
+
+    if(currentShape.hasFallen){
+       
+        
+        console.log("hasFallen");
+        allShapes.push(new Shape());
+        currentShape = allShapes[allShapes.length-1];
+        currentShape.initializeShape();  
+        
+       
+       
+       
+    }
+
+ },0.00001);
+
 
 
 
@@ -50,24 +67,13 @@ function drawNew(matrix){
 function juego(){
 
    
-    console.log("normalbeat");
+
   
-    if(currentShape.hasFallen){
-       
-        
-        console.log("hasFallen");
-        allShapes.push(new Shape());
-        currentShape = allShapes[allShapes.length-1];
-        currentShape.initializeShape();
-        
-       
-       
-       
-    }else{
+    
         clearShape();
         currentShape.update();
         currentShape.drawShape();
-    }
+    
    
     
  
