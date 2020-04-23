@@ -29,7 +29,7 @@ class Shape{
 
     
     x = 160;
-    y = 0;
+    y = 20;
     hasFallen = false;
     totalBlocks = new Array(4);
     speed = scale;
@@ -174,14 +174,19 @@ class Shape{
         
         else{
                var thisShape = this;
+               
 
 
-               setTimeout(function(){
+                 setTimeout(function(){
                 if(!(thisShape.totalBlocks.every(function(block){return block.y < canvas.height-10}) && thisShape.totalBlocks.every(checkBlock))){
+                  
+                    
                    thisShape.hasFallen = true;
                   
                    
                    var spots = [];
+                   var lastSpot;
+                   var counter = 0;
                    
                     for(let i = 0;i<4;i++){
                         var blockx = thisShape.totalBlocks[i].x/scale;
@@ -191,20 +196,31 @@ class Shape{
                         
                     }
                     checkLines(spots);
-                    var lastSpot =spots[spots.length-1];
-                    
-                    if(lastSpot >= 0){
-                        removeEventListener('keydown',keyMov);
-                        console.log(lastSpot);
-                        for(let i = 0; i < spots.length; i++){
-                            ctx.clearRect(0,thisShape.totalBlocks[i].y,canvas.width,scale);
-                            
-                            game[spots[i]].fill(0);
-                        }
+                   
+                   
+
+                  
+                   
+                  if(spots.length > 0){
+                      clearInterval(playing);
+                    for(let i = 0; i < spots.length; i++){
+                        ctx.clearRect(0,thisShape.totalBlocks[i].y,canvas.width,scale);
                         
-                     
-                           
-                           
+                        game[spots[i]].fill(0);
+                        
+                    }
+                   
+                   
+                    while(spots.length > 0){
+                        
+                
+
+                        lastSpot =spots.pop() + counter;
+
+                        if(game[lastSpot].some(function(block){ block == 1})){
+                            break;
+                        }
+  
                             do{
                          
                             
@@ -214,32 +230,31 @@ class Shape{
                                
                                
                             }
+                         
                            
                            
                            
                             
                         } while(game[lastSpot].every(block => {return block == 0}));
+                        
+                        
                       
                     
-                            ctx.clearRect(0,0,canvas.width,canvas.height);
-                          
-                            drawNew(game);
-                            setTimeout(() => {
-                                addEventListener('keydown',keyMov);
-                            }, 500);
                             
+                            counter++;
                     }
-                            // sumar +1 a filas faltantes por bajar 0000000 checkRemainingLines() if(game[x+1] all 0 entonces ejecutar algoritmo)
-                            
-                           
-                       
-
                     
+                    ctx.clearRect(0,0,canvas.width,canvas.height);   
+                    drawNew(game);
+                   
+                    playing = setInterval(juego,1000);
+                }
+                           
                             
                 }
                 
 
-               },750);
+              },500);
                     
                
           
@@ -285,15 +300,24 @@ class Shape{
                 y = aux;
                  x+= horizontalCenter;
                 y += verticalCenter;
+                
                 if(game[y/scale][x/scale] == 1 && y/scale != game.length-1 || x > canvas.width-scale || x < 0){
                
                     this.totalBlocks = [...beforeTotalBlocks];
                     return;
+                
                 }
                
 
                this.totalBlocks[i]= new Block(x,y);
               
+            }
+            if(this.totalBlocks.some(function (blockY){return blockY > canvas.height})){
+                console.log("hola");
+                for(let i = 0; i < this.totalBlocks.length;i++){
+                    this.totalBlocks[i].y -= scale;
+                }
+
             }
             this.drawShape();
         }

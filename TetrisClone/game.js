@@ -11,11 +11,10 @@ for(let i = 0; i < game.length;i++){
     game[i] = new Array(canvas.width/scale).fill(0);
    
 }
+
 game[game.length-1] = new Array(canvas.width/scale).fill(1);
 
 allShapes.push(new Shape());
-
-
 currentShape = allShapes[allShapes.length-1];
 
 currentShape.initializeShape();
@@ -51,12 +50,12 @@ function drawNew(matrix){
 function juego(){
 
    
-    
+    console.log("normalbeat");
   
     if(currentShape.hasFallen){
        
         
-    
+        console.log("hasFallen");
         allShapes.push(new Shape());
         currentShape = allShapes[allShapes.length-1];
         currentShape.initializeShape();
@@ -66,11 +65,12 @@ function juego(){
        
     }else{
         clearShape();
+        currentShape.update();
+        currentShape.drawShape();
     }
    
     
-    currentShape.update();
-     currentShape.drawShape();
+ 
 
     
 }
