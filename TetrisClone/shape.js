@@ -179,7 +179,7 @@ class Shape{
 
                  setTimeout(function(){
                 if(!(thisShape.totalBlocks.every(function(block){return block.y < canvas.height-10}) && thisShape.totalBlocks.every(checkBlock))){
-                  
+                    clearInterval(playing);
                     
                    thisShape.hasFallen = true;
                   
@@ -202,9 +202,9 @@ class Shape{
                   
                    
                   if(spots.length > 0){
-                      clearInterval(playing);
+                     
                     for(let i = 0; i < spots.length; i++){
-                        ctx.clearRect(0,thisShape.totalBlocks[i].y,canvas.width,scale);
+                        ctx.clearRect(0,spots[i],canvas.width,scale);
                         
                         game[spots[i]].fill(0);
                         
@@ -249,10 +249,10 @@ class Shape{
                     ctx.clearRect(0,0,canvas.width,canvas.height);   
                     drawNew(game);
                    
-                    playing = setInterval(juego,1000);
+                    
                 }
 
-                
+                playing = setInterval(juego,1000);
                            
                
                 }
