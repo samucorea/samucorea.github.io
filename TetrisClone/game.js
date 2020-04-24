@@ -52,14 +52,18 @@ function clearShape(){
     }
 }
 function drawNew(matrix){
+    var color;
 
     for(var i = 0; i < matrix.length; i++){
        for(let x = 0; x < matrix[i].length; x++){
-           if(matrix[i][x] == 1){
-               var block = new Block(x*scale,i*scale);
-               block.draw();
+           color = matrix[i][x];
+           if(matrix[i][x] == 0){
+               continue;
               
            }
+           var block = new Block(x*scale,i*scale,Color[color]);
+           block.draw();
+          
        }
        
     }
@@ -73,8 +77,8 @@ function juego(){
         clearShape();
         currentShape.update();
         currentShape.drawShape();
-    
-   
+
+      
     
  
 

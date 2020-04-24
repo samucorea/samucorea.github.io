@@ -8,16 +8,32 @@ var scale = 20;
 
 
 
+const Color = {
+    1 : "#FF355E",
+    2 : "#FD5B78",
+    3 : "#FF6037",
+    4 : "#CCFF00",
+    5 : "#AAF0D1",
+    6 : "#EE34D2",
+    7 : "#FF00CC",
+
+}
+
+
+
+
 class Block {
     x = 0;
     y = 0;
-    constructor(x,y){
+    color;
+    constructor(x,y,color){
         this.x = x;
         this.y = y;
+        this.color = color;
      
     }
     draw(){
-        ctx.fillStyle = "red";
+        ctx.fillStyle = this.color;
         ctx.fillRect(this.x,this.y,scale,scale);
          ctx.strokeRect(this.x,this.y,scale,scale);
     }
@@ -34,6 +50,7 @@ class Shape{
     totalBlocks = new Array(4);
     speed = scale;
     type = Math.floor(Math.random() * 7);
+   
   
   
     initializeShape(){
@@ -49,7 +66,7 @@ class Shape{
                 // [][][][]
                
                 for(let i = 0;i < this.totalBlocks.length;i++){
-                    this.totalBlocks[i] = new Block(xsquare,ysquare);
+                    this.totalBlocks[i] = new Block(xsquare,ysquare,Color[1]);
                     xsquare+=scale;
                    
                 
@@ -64,10 +81,10 @@ class Shape{
                 //[]
                 //[][][]
                 
-                this.totalBlocks[0] = new Block(xsquare,ysquare);
+                this.totalBlocks[0] = new Block(xsquare,ysquare,Color[2]);
                 ysquare += scale;
                 for(let i = 1; i < 4; i++){
-                    this.totalBlocks[i] = new Block(xsquare,ysquare);
+                    this.totalBlocks[i] = new Block(xsquare,ysquare,Color[2]);
                     
                     xsquare += scale;
                     
@@ -78,11 +95,11 @@ class Shape{
                      //[]
                  //[][][]
 
-                 this.totalBlocks[0] = new Block(xsquare,ysquare);
+                 this.totalBlocks[0] = new Block(xsquare,ysquare,Color[3]);
                 
                 ysquare += scale;
                 for(let i = 1; i < 4; i++){
-                    this.totalBlocks[i] = new Block(xsquare,ysquare);
+                    this.totalBlocks[i] = new Block(xsquare,ysquare,Color[3]);
                   
                     xsquare -= scale;
                     
@@ -94,9 +111,9 @@ class Shape{
                 //[][]
                 //[][]
                 for(let i = 0; i <= 2;i +=2){
-                     this.totalBlocks[i] = new Block(xsquare,ysquare);
+                     this.totalBlocks[i] = new Block(xsquare,ysquare,Color[4]);
                  
-                    this.totalBlocks[i+1] = new Block(xsquare+scale,ysquare);
+                    this.totalBlocks[i+1] = new Block(xsquare+scale,ysquare,Color[4]);
            
                     ysquare+=scale;
                 }
@@ -106,9 +123,9 @@ class Shape{
             //  [][]
                 
                for(let i = 0; i <= 2; i+=2){
-                    this.totalBlocks[i] = new Block(xsquare,ysquare);
+                    this.totalBlocks[i] = new Block(xsquare,ysquare,Color[5]);
               
-                    this.totalBlocks[i+1] = new Block(xsquare+scale,ysquare);
+                    this.totalBlocks[i+1] = new Block(xsquare+scale,ysquare,Color[5]);
                    
                    
                     ysquare -= scale;
@@ -120,13 +137,13 @@ class Shape{
         //  [][][]
 
                for(let i =0; i < 3; i++){
-                   this.totalBlocks[i] = new Block(xsquare,ysquare);
+                   this.totalBlocks[i] = new Block(xsquare,ysquare,Color[6]);
           
                    xsquare+=scale;
                }
                xsquare -=scale*2;
                ysquare -=scale;
-               this.totalBlocks[3]= new Block(xsquare,ysquare);
+               this.totalBlocks[3]= new Block(xsquare,ysquare,Color[6]);
          
                break;
 
@@ -134,9 +151,9 @@ class Shape{
           //  [][]
             //  [][]
             for(let i = 0; i <= 2; i+=2){
-                this.totalBlocks[i] = new Block(xsquare,ysquare);
+                this.totalBlocks[i] = new Block(xsquare,ysquare,Color[7]);
                 
-                this.totalBlocks[i+1] = new Block(xsquare+scale,ysquare);
+                this.totalBlocks[i+1] = new Block(xsquare+scale,ysquare,Color[7]);
          
                
                 ysquare -= scale;
@@ -175,14 +192,16 @@ class Shape{
         else{
                var thisShape = this;
                
-
+                var shapeColor = this.type + 1;
 
                  setTimeout(function(){
                 if(!(thisShape.totalBlocks.every(function(block){return block.y < canvas.height-10}) && thisShape.totalBlocks.every(checkBlock))){
                     clearInterval(playing);
+                   
+   
                     
                    thisShape.hasFallen = true;
-                  
+                   
                    
                    var spots = [];
                    var lastSpot;
@@ -191,33 +210,39 @@ class Shape{
                     for(let i = 0;i<4;i++){
                         var blockx = thisShape.totalBlocks[i].x/scale;
                         var blocky = thisShape.totalBlocks[i].y/scale;
-                        game[blocky][blockx] = 1;
+                        game[blocky][blockx] = shapeColor;
+                      
                         
                         
                     }
                     checkLines(spots);
+                    console.log(spots);
+                    console.log(game);
                    
-                   
+         
 
                   
                    
                   if(spots.length > 0){
                      
                     for(let i = 0; i < spots.length; i++){
-                        ctx.clearRect(0,spots[i],canvas.width,scale);
+                        ctx.clearRect(0,spots[i]*scale,canvas.width,scale);
                         
                         game[spots[i]].fill(0);
+                     
                         
                     }
                    
                    
                     while(spots.length > 0){
+
                         
                 
 
                         lastSpot =spots.pop() + counter;
+                       
 
-                        if(game[lastSpot].some(function(block){ block == 1})){
+                        if(game[lastSpot].some(function(block){ block > 0})){
                             break;
                         }
   
@@ -227,6 +252,7 @@ class Shape{
                             for(var x = lastSpot; x > 0; x--){
                                
                                 game[x] = [...game[x-1]];
+                              
                                
                                
                             }
@@ -246,8 +272,8 @@ class Shape{
                    
                     
                     
-                    ctx.clearRect(0,0,canvas.width,canvas.height);   
-                    drawNew(game);
+                     ctx.clearRect(0,0,canvas.width,canvas.height);   
+                     drawNew(game);
                    
                     
                 }
@@ -287,6 +313,7 @@ class Shape{
            var beforeTotalBlocks = [...this.totalBlocks];
            var horizontalCenter = this.totalBlocks[1].x;
            var verticalCenter = this.totalBlocks[1].y;
+           var aux;
 
             for(let i = 0; i < 4; i++){
 
@@ -299,7 +326,7 @@ class Shape{
 
                 y-= verticalCenter;
                 x -= horizontalCenter;
-                var aux = x;
+                aux = x;
                 x = -y;
                 y = aux;
                  x+= horizontalCenter;
@@ -332,13 +359,13 @@ class Shape{
 
      
         clearShape();
-        if(event.keyCode == 39 && currentShape.totalBlocks.every(function(block){return block.x <canvas.width - scale && game[block.y/scale][block.x/scale + 1] != 1}) ){
+        if(event.keyCode == 39 && currentShape.totalBlocks.every(function(block){return block.x <canvas.width - scale && game[block.y/scale][block.x/scale + 1] == 0}) ){
             currentShape.modify(scale,0);
         
  
          }
 
-        if(event.keyCode == 37 && currentShape.totalBlocks.every(function(block){return block.x > 0 && game[block.y/scale][block.x/scale -1] != 1})){
+        if(event.keyCode == 37 && currentShape.totalBlocks.every(function(block){return block.x > 0 && game[block.y/scale][block.x/scale -1] == 0})){
             currentShape.modify(-scale,0);
         }
 
@@ -383,7 +410,7 @@ class Shape{
    function checkBlock(block){
        try{
        
-       return game[block.y/scale + 1][block.x / scale] != 1;
+       return game[block.y/scale + 1][block.x / scale] == 0;
        }
        catch{
          
@@ -394,7 +421,7 @@ class Shape{
  {
      
    for(var i =0; i < game.length-1; i++){
-       if(game[i].every(block =>{return block == 1})){
+       if(game[i].every(block =>{return block > 0})){
         spots.push(i);
        }
    }
