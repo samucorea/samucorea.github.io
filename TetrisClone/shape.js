@@ -216,14 +216,16 @@ class Shape{
                         
                     }
                     checkLines(spots);
-                    console.log(spots);
-                    console.log(game);
+                    
+                 
                    
          
-
+                  
                   
                    
                   if(spots.length > 0){
+
+                    console.log(spots);
                      
                     for(let i = 0; i < spots.length; i++){
                         ctx.clearRect(0,spots[i]*scale,canvas.width,scale);
@@ -232,7 +234,7 @@ class Shape{
                      
                         
                     }
-                   
+                  
                    
                     while(spots.length > 0){
 
@@ -241,14 +243,16 @@ class Shape{
 
                         lastSpot =spots.pop() + counter;
                        
-
-                        if(game[lastSpot].some(function(block){ block > 0})){
+                       
+                        if(game[lastSpot].some(function(block){ return block != 0})){
+                           
                             break;
                         }
+                        
   
                             do{
                          
-                            
+                            console.log("hola");
                             for(var x = lastSpot; x > 0; x--){
                                
                                 game[x] = [...game[x-1]];
@@ -269,7 +273,7 @@ class Shape{
                             
                             counter++;
                     }
-                   
+                    
                     
                     
                      ctx.clearRect(0,0,canvas.width,canvas.height);   
@@ -377,7 +381,7 @@ class Shape{
         }
 
         if(event.keyCode == 38 && currentShape.type != 3){
-        
+            console.log("hola");
         
            currentShape.rotateShape();
               

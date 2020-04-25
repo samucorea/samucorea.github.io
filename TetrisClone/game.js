@@ -25,7 +25,7 @@ currentShape.initializeShape();
     if(currentShape.hasFallen){
        
         
-        console.log("hasFallen");
+     
         allShapes.push(new Shape());
         currentShape = allShapes[allShapes.length-1];
         currentShape.initializeShape();  
