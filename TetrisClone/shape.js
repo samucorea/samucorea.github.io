@@ -45,7 +45,7 @@ class Shape{
 
     
     x = 60;
-    y = 20;
+    y = 0;
     hasFallen = false;
     totalBlocks = new Array(4);
     speed = scale;
