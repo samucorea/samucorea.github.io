@@ -44,8 +44,8 @@ class Block {
 class Shape{
 
     
-    x = 160;
-    y = 0;
+    x = 60;
+    y = 20;
     hasFallen = false;
     totalBlocks = new Array(4);
     speed = scale;
@@ -196,17 +196,20 @@ class Shape{
 
                  setTimeout(function(){
                 if(!(thisShape.totalBlocks.every(function(block){return block.y < canvas.height-10}) && thisShape.totalBlocks.every(checkBlock))){
+                   
                     clearInterval(playing);
                    
    
                     
                    thisShape.hasFallen = true;
+                  
                    
                    
                    var spots = [];
                    var lastSpot;
                    var counter = 0;
-                   
+                   var changingLevel = false;
+                   var currentRowsTaken;
                     for(let i = 0;i<4;i++){
                         var blockx = thisShape.totalBlocks[i].x/scale;
                         var blocky = thisShape.totalBlocks[i].y/scale;
@@ -217,7 +220,8 @@ class Shape{
                     }
                     checkLines(spots);
                     
-                 
+                    currentRowsTaken = spots.length;
+                    
                    
          
                   
@@ -225,7 +229,7 @@ class Shape{
                    
                   if(spots.length > 0){
 
-                    console.log(spots);
+                 
                      
                     for(let i = 0; i < spots.length; i++){
                         ctx.clearRect(0,spots[i]*scale,canvas.width,scale);
@@ -234,6 +238,7 @@ class Shape{
                      
                         
                     }
+                   
                   
                    
                     while(spots.length > 0){
@@ -252,7 +257,7 @@ class Shape{
   
                             do{
                          
-                            console.log("hola");
+                            
                             for(var x = lastSpot; x > 0; x--){
                                
                                 game[x] = [...game[x-1]];
@@ -278,12 +283,14 @@ class Shape{
                     
                      ctx.clearRect(0,0,canvas.width,canvas.height);   
                      drawNew(game);
-                   
+                     changingLevel = calculatePoints(currentRowsTaken);
                     
                 }
-
-                playing = setInterval(juego,1000);
-                           
+                //If level is not changing, then create the interval. This is because in the CalculatePoints function, it is necessary
+                // to create a new interval with changed time. If left open it would cause a double interval.(see scoring.js)
+                if(!changingLevel){
+                playing = setInterval(juego,timeInterval);
+                }
                
                 }
                 
@@ -381,7 +388,7 @@ class Shape{
         }
 
         if(event.keyCode == 38 && currentShape.type != 3){
-            console.log("hola");
+            
         
            currentShape.rotateShape();
               
@@ -393,11 +400,12 @@ class Shape{
         if(event.keyCode == 32){
        
             if(isOn){
+                
             clearInterval(playing);
             isOn = false;
             }
             else if(!isOn){
-                playing  = setInterval(juego,1000);
+                playing  = setInterval(juego,timeInterval);
                 isOn = true;
             }
         }

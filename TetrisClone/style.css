@@ -1,0 +1,8 @@
+.gameStyle{
+    position:absolute;
+    float:top;
+    font-size: 60px;
+}
+#score{
+    top:90px;
+}

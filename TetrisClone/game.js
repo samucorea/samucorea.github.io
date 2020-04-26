@@ -2,6 +2,7 @@ var allShapes = [];
 var canvas = document.getElementById("gameCanvas");
 var ctx = canvas.getContext("2d");
 var currentShape;
+var timeInterval = 1000;
 
 var game = new Array(canvas.height/scale+ 1);
 var jumping;
@@ -12,13 +13,17 @@ for(let i = 0; i < game.length;i++){
    
 }
 
+
 game[game.length-1] = new Array(canvas.width/scale).fill(1);
+
 
 allShapes.push(new Shape());
 currentShape = allShapes[allShapes.length-1];
 
 currentShape.initializeShape();
- var playing = setInterval(juego,1000);
+
+
+ var playing = setInterval(juego,timeInterval);
 
  setInterval(function(){
 
@@ -70,18 +75,10 @@ function drawNew(matrix){
 }
 function juego(){
 
-   
-
-  
     
         clearShape();
         currentShape.update();
         currentShape.drawShape();
-
-      
-    
- 
-
     
 }
 
