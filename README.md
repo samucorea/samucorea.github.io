@@ -7,4 +7,6 @@ Just some random projects to show my programming skills
 
 [Snake Game](https://samucorea.github.io/SnakeGame/index.html)<br />
 
-[Tetris](https://samucorea.github.io/TetrisClone/index.html)
+[Tetris](https://samucorea.github.io/TetrisClone/index.html)<br />
+
+[notetaker(app to have notebooks)](https://samucorea.github.io/notetaker/)
