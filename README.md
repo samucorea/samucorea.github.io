@@ -9,4 +9,4 @@ Just some random projects to show my programming skills
 
 [Tetris](https://samucorea.github.io/TetrisClone/index.html)<br />
 
-[notetaker(app to have notebooks)](https://samucorea.github.io/notetaker/)
+[samublog(my personal blog)](samueldubus.herokuapp.com)
