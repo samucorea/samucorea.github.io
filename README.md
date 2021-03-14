@@ -9,4 +9,4 @@ Just some random projects to show my programming skills
 
 [Tetris](https://samucorea.github.io/TetrisClone/index.html)<br />
 
-[samublog(my personal blog)](samueldubus.herokuapp.com)
+[samublog(my personal blog)](https://samueldubus.herokuapp.com)
